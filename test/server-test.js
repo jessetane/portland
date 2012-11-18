@@ -7,13 +7,25 @@
 
 
 var assert = require("assert");
-var portland = require("../index");
+var portland = require("../");
 var server = portland.createServer();
 
-// check empty
-var resp = server.query();
+// check length
+var serviceCount = server.query().length;
+
+// register a no-version service
+resp = server.register("myservice");
 //console.log(resp);
-assert.strictEqual(resp.length, 0);
+
+// register another no-version service
+resp = server.register("myservice");
+//console.log(resp);
+assert(resp instanceof Error);
+assert(resp.service);
+assert(resp.service.port);
+
+// free the no-version service
+resp = server.free("myservice");
 
 // register
 resp = server.register("myservice@v0.0.1");
@@ -49,10 +61,10 @@ resp = server.free("myservice");
 //console.log(resp);
 assert.strictEqual(resp instanceof Error, false);
 
-// check empty
+// check length
 var resp = server.query();
 //console.log(resp);
-assert.strictEqual(resp.length, 0);
+assert.strictEqual(resp.length, serviceCount);
 
 // close
 console.log("✔  all tests passed!");

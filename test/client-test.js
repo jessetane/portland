@@ -6,11 +6,10 @@
  */
 
 
-//var async = require("async");
 var assert = require("assert");
-var portland = require("../index");
+var portland = require("../");
 var server = portland.createServer();
-var client = portland.createClient(function () {
+portland.createClient(function (client) {
   
   // check empty
   client.query(function (err, resp) {
@@ -73,9 +72,4 @@ var client = portland.createClient(function () {
       });
     });
   });
-});
-
-// make sure disconnected client requests return error
-client.query(function (err) {
-  assert(err instanceof Error);
 });

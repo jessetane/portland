@@ -5,13 +5,9 @@
 
 
 exports.createServer = function (port) {
-  return require("./lib/server").listen(port || 1845);
+  return require("./lib/server").listen(port);
 }
 
 exports.createClient = function (port, cb) {
-  if (typeof port === "function") {
-    cb = port;
-    port = null;
-  }
-  return require("./lib/client").connect(port || 1845, cb);
+  require("./lib/client").connect(port, cb);
 }
