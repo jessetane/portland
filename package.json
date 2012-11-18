@@ -1,11 +1,11 @@
 {
   "name": "portland",
+  "description": "100% locally grown ports",
   "version": "0.0.1",
+  "author": "Jesse Tane <jesse.tane@gmail.com>",
   "dependencies": {
-    "semver": "*",
-    "connect": "*",
-    "http-proxy": "*",
-    "cui": "*"
+    "semver": "1.1.0",
+    "cui": "0.0.4"
   },
   "bin": {
     "portland": "bin/portland.js"
