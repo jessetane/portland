@@ -13,7 +13,7 @@ var client = null;
 
 setTimeout(function () {
   if (!client) {
-    console.log("waiting for a portland server...");
+    console.warn("waiting for a portland server...");
   }
 }, 20);
 
@@ -46,7 +46,11 @@ function perform (cb) {
       }
       if (resp) console.log(resp.port);
     } else if (action === "query") {
-      console.log(resp);
+      if (resp.length === 0) {
+        err = new Error();
+      } else {
+        console.log(resp[0].port);
+      }
     }
     cb();
     process.exit(err ? 1 : 0);
