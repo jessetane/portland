@@ -11,7 +11,7 @@ var portland = require("../");
 var server = portland.createServer();
 
 // check length
-var serviceCount = server.query().length;
+var serviceCount = server.lookup().length;
 
 // register a no-version service
 resp = server.register("myservice");
@@ -46,7 +46,7 @@ resp = server.promote("myservice@v0.0.2");
 assert.strictEqual(resp instanceof Error, false);
 
 // check order
-var resp = server.query();
+var resp = server.lookup();
 //console.log(resp);
 assert.strictEqual(resp.length, 2);
 assert.strictEqual(resp[0].version, "v0.0.2");
@@ -62,7 +62,7 @@ resp = server.free("myservice");
 assert.strictEqual(resp instanceof Error, false);
 
 // check length
-var resp = server.query();
+var resp = server.lookup();
 //console.log(resp);
 assert.strictEqual(resp.length, serviceCount);
 

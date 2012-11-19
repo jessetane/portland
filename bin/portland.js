@@ -8,26 +8,32 @@
 
 var cui = require("cui");
 var portland = require("../");
+var args = process.argv.slice(2);
 var client = null;
 
-
-setTimeout(function () {
-  if (!client) {
-    console.warn("waiting for a portland server...");
+portland.createClient(function (err, c) {
+  if (err) {
+    console.warn(err.message);
+    process.exit(1);
+  } else {
+    client = c;
+    cui.push(actions);
   }
-}, 20);
-
-portland.createClient(function (c) {
-  client = c;
-  cui.push(actions);
-  cui.push(services);
-  cui.push(perform);
 });
 
 var actions = {
   title: "choose an action:",
   type: "buttons",
-  data: Object.keys(require("../lib/registry"))
+  data: Object.keys(require("../lib/registry")),
+  action: function (cb) {
+    if (args.length === 1 && args[0] === "lookup") {
+      cui.results.push("");
+    } else {
+      cui.push(services);
+    }
+    cui.push(perform);
+    cb();
+  }
 };
 
 var services = {
@@ -40,16 +46,19 @@ function perform (cb) {
   var service = cui.last(1);
   client[action](service, function (err, resp) {
     if (action === "register") {
-      if (err && err.service) {
-        resp = err.service;
-        err = null;
+      if (resp) {
+        console.log(resp.port);
       }
-      if (resp) console.log(resp.port);
-    } else if (action === "query") {
+    } else if (action === "lookup") {
       if (resp.length === 0) {
         err = new Error();
-      } else {
+      } else if (service) {
         console.log(resp[0].port);
+      } else {
+        for (var s in resp) {
+          service = resp[s];
+          console.log(service.host + ":" + service.port);
+        }
       }
     }
     cb();

@@ -9,10 +9,10 @@
 var assert = require("assert");
 var portland = require("../");
 var server = portland.createServer();
-portland.createClient(function (client) {
+portland.createClient(function (err, client) {
   
   // check empty
-  client.query(function (err, resp) {
+  client.lookup(function (err, resp) {
     //console.log(resp);
     assert.strictEqual(resp.length, 0);
     
@@ -35,7 +35,7 @@ portland.createClient(function (client) {
           assert.strictEqual(resp instanceof Error, false);
           
           // check order
-          client.query(function (err, resp) {
+          client.lookup(function (err, resp) {
             //console.log(resp);
             assert.strictEqual(resp.length, 2);
             assert.strictEqual(resp[0].version, "v0.0.2");
@@ -51,13 +51,13 @@ portland.createClient(function (client) {
                 assert.strictEqual(resp instanceof Error, false);
 
                 // check empty
-                client.query(function (err, resp) {
+                client.lookup(function (err, resp) {
                   //console.log(resp);
                   assert.strictEqual(resp.length, 0);
                   client.destroy();
                   
                   // make sure disconnected client requests return error
-                  client.query(function (err, resp) {
+                  client.lookup(function (err, resp) {
                     //console.log(err.stack);
                     assert(err instanceof Error);
                     console.log("✔  all tests passed!");
