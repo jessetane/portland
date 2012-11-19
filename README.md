@@ -1,4 +1,10 @@
-# portland
+```
+eeeee eeeee eeeee eeeee e     eeeee eeeee eeeee 
+8   8 8  88 8   8   8   8     8   8 8   8 8   8 
+8eee8 8   8 8eee8e  8e  8e    8eee8 8e  8 8e  8 
+88    8   8 88   8  88  88    88  8 88  8 88  8 
+88    8eee8 88   8  88  88eee 88  8 88  8 88ee8
+```
 100% locally grown ports.
 
 ## Why
@@ -9,6 +15,9 @@ Portland has two parts: a client and a server. The server contains the registry 
 
 ## Install
 ```npm install portland -g```
+
+## Usage
+This is mostly just an experiment. I'll update this if / when I actually end up using it...
 
 ## Inspiration
 [seaport](https://github.com/substack/seaport.git)
