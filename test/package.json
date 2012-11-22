@@ -4,7 +4,6 @@
   "version": "0.0.3",
   "author": "Jesse Tane <jesse.tane@gmail.com>",
   "dependencies": {
-    "mkdirp": "0.3.3",
     "semver": "1.1.0",
     "cui": "0.0.4"
   },

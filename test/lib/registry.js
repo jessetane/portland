@@ -28,7 +28,6 @@ exports.register = function (service) {
     var versions = registry[version.host] || (registry[version.host] = []);
     versions.push(version);
     ports[version.port] = null;
-    addResolver(matches[m].host);
     saveCache();
     return version;
   }
@@ -40,7 +39,6 @@ exports.free = function (service) {
   if (matches.length) {
     for (var m in matches) {
       delete ports[matches[m].port];
-      removeResolver(matches[m].host);
     }
     saveCache();
     return matches;
@@ -132,30 +130,4 @@ function loadCache () {
 
 function saveCache () {
   fs.writeFile(__dirname + "/../.cache", JSON.stringify(cache));
-}
-
-function addResolver (hostname) {
-  /*
-  var dnsinfo = "nameserver 127.0.0.1\nport 8079";  // TODO where does this port number come from?
-  mkdirp("/etc/resolver");
-  fs.writeFile("/etc/resolver/" + hostname, dnsinfo, function (err, data) {
-    if (err) {
-      console.log("could not add resolver for: " + hostname);
-    } else {
-      console.log("resolver added for: " + hostname);
-    }
-  });
-  */
-}
-
-function removeResolver (hostname) {
-  /*
-  exec("rm /etc/resolver/" + hostname, function (err, data) {
-    if (err) {
-      console.log("could not remove resolver for: " + hostname);
-    } else {
-      console.log("resolver removed for: " + hostname);
-    }
-  });
-  */
 }
