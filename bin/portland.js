@@ -9,19 +9,8 @@
 var cui = require("cui");
 var portland = require("../");
 var args = process.argv.slice(2);
-var client = null;
 
-portland.createClient(function (err, c) {
-  if (err) {
-    console.warn(err.message);
-    process.exit(1);
-  } else {
-    client = c;
-    cui.push(actions);
-  }
-});
-
-var actions = {
+cui.push({
   title: "choose an action:",
   type: "buttons",
   data: Object.keys(require("../lib/registry")),
@@ -34,7 +23,7 @@ var actions = {
     cui.push(perform);
     cb();
   }
-};
+});
 
 var services = {
   type: "fields",
@@ -44,7 +33,7 @@ var services = {
 function perform (cb) {
   var action = cui.last(2);
   var service = cui.last(1);
-  client[action](service, function (err, resp) {
+  portland[action](service, function (err, resp) {
     if (action === "register") {
       if (resp) {
         console.log(resp.port);

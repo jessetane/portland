@@ -1,7 +1,7 @@
 {
   "name": "portland",
   "description": "100% locally grown ports",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "author": "Jesse Tane <jesse.tane@gmail.com>",
   "dependencies": {
     "mkdirp": "0.3.3",
