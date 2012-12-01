@@ -23,4 +23,4 @@ Not stable... an experiment for now.
 [seaport](https://github.com/substack/seaport.git)
 
 ## License
-BEER
+MIT
