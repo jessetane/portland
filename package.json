@@ -1,13 +1,14 @@
 {
   "name": "portland",
   "description": "100% locally grown ports",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "author": "Jesse Tane <jesse.tane@gmail.com>",
   "dependencies": {
     "semver": "1.1.0",
-    "cui": "0.0.6"
+    "cui": "0.0.8"
   },
   "bin": {
-    "portland": "bin/portland.js"
+    "portland": "bin/portland.js",
+    "pdx": "bin/portland.js"
   }
 }

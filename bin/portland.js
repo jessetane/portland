@@ -13,48 +13,72 @@ var args = process.argv.slice(2)
 cui.push({
   title: "choose an action:",
   type: "buttons",
-  data: Object.keys(require("../lib/registry")),
-  action: function (cb) {
-    if (args.length === 1 && args[0] === "lookup") {
-      cui.results.push("")
-    } else {
-      cui.push(services)
-    }
-    cui.push(perform)
-    cb()
-  }
+  data: Object.keys(require("../lib/registry"))
 })
 
-var services = {
-  type: "fields",
-  data: [ "type a service name: " ]
-}
+cui.push(function (cb) {
+  var action = cui.last(1)
+  var view = {
+    type: "fields",
+    data: "service to " + action + ": "
+  }
+  switch (action) {
+    case "lookup":        // pdx lookup myserv
+      cui.splice(function (cb) {
+        if (args.length === 0 || args.length > 1) {
+          cui.splice(view)
+        }
+        cb()
+      })
+      break
+    case "unalias":       // pdx unalias www.myserv
+      view.data = "aliases to remove : "
+    case "register":      // pdx register myserv
+    case "unregister":    // pdx unregister myserv
+    case "alias":         // pdx alias myserv www.myserv
+    case "promote":       // pdx promote myserv
+      cui.splice(view)
+      break
+  }
+  cb()
+})
 
-function perform (cb) {
-  var action = cui.last(2)
-  var service = cui.last(1)
-  portland[action](service, function (err, resp) {
+cui.push(function (cb) {
+  if (cui.last(1) !== "") {
+    for (var i=2; i<args.length; i++) {
+      cui.results.push(args[i])
+    }
+  }
+  cb()
+})
+
+cui.push(function (cb) {
+  var action = cui.results.shift()
+  cui.results.push(function (err, res) {
     if (err) {
       console.error(err.message)
-    } else {
-      if (action === "register") {
-        if (resp) {
-          console.log(resp.port)
-        }
-      } else if (action === "lookup") {
-        if (resp.length === 0) {
-          err = new Error()
-        } else if (service) {
-          console.log(resp[0].port)
-        } else {
-          for (var s in resp) {
-            service = resp[s]
+    }
+    switch (action) {
+      case "lookup":
+        if (cui.results.length === 1) {
+          for (var r in res) {
+            service = res[r]
             console.log(service.host + ":" + service.port)
           }
+        } else if (res.length) {
+          console.log(res[0].port)
         }
-      }
+        break
+      case "register":
+        console.log(res.port)
+        break
+      case "unregister":
+      case "alias":
+      case "unalias":
+      case "promote":
+        break
     }
-    cb()
-    process.exit(err ? 1 : 0)
   })
-}
+  portland[action].apply(null, cui.results)
+  cb()
+})
