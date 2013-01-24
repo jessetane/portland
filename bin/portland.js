@@ -63,7 +63,8 @@ cui.push(function (cb) {
         if (cui.results.length === 1) {
           for (var r in res) {
             service = res[r]
-            console.log(service.host + ":" + service.port)
+            var version = (service.version) ? "@" + service.version : ""
+            console.log(service.host + version + ":" + service.port)
           }
         } else if (res.length) {
           console.log(res[0].port)
